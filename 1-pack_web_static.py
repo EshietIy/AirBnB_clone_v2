@@ -1,8 +1,10 @@
 #!/usr/bin/python3
+"""A module for web application deployment with Fabric."""
 from fabric.api import *
 import os
 from datetime import datetime
 
+@fabric_api.runs_once
 def do_pack():
     try:
         filepath = "versions/web_static_" + datetime.now().strftime("%y%m%d%H%M%S") + ".tgz"
