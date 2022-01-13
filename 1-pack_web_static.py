@@ -6,6 +6,7 @@ from datetime import datetime
 
 @fabric_api.runs_once
 def do_pack():
+    """Archives the static files."""
     try:
         filepath = "versions/web_static_" + datetime.now().strftime("%y%m%d%H%M%S") + ".tgz"
         local("mkdir -p versions")
