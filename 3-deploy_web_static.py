@@ -1,26 +1,37 @@
 #!/usr/bin/python3
-"""A feb file to deploy to a server"""
-from fabric.api import *
-from datetime import datetime
+"""A module for web application deployment with Fabric."""
 import os
+from datetime import datetime
+from fabric.api import env, local, put, run, runs_once
 
 
-env.hosts = ['35.190.182.223', '18.232.186.120']
+env.hosts = ["34.73.0.174", "34.75.208.81"]
+"""The list of host server IP addresses."""
 
+
+@runs_once
 def do_pack():
-    """archives the static file"""
+    """Archives the static files."""
+    if not os.path.isdir("versions"):
+        os.mkdir("versions")
+    cur_time = datetime.now()
+    output = "versions/web_static_{}{}{}{}{}{}.tgz".format(
+        cur_time.year,
+        cur_time.month,
+        cur_time.day,
+        cur_time.hour,
+        cur_time.minute,
+        cur_time.second
+    )
     try:
-        filepath = "versions/web_static_" + datetime.now().\
-            strftime("%Y%m%d%H%M%S") + ".tgz"
-        local("mkdir -p versions")
-        local("tar -zcvf versions/web_static_$(date +%Y%m%d%H%M%S).tgz\
-     web_static")
-        print("web_static packed: {} -> {}".
-              format(filepath, os.path.getsize(filepath)))
+        print("Packing web_static to {}".format(output))
+        local("tar -cvzf {} web_static".format(output))
+        archize_size = os.stat(output).st_size
+        print("web_static packed: {} -> {} Bytes".format(output, archize_size))
+    except Exception:
+        output = None
+    return output
 
-
-    except BaseException:
-        return None
 
 def do_deploy(archive_path):
     """Deploys the static files to the host servers.
@@ -47,6 +58,7 @@ def do_deploy(archive_path):
     except Exception:
         success = False
     return success
+
 
 def deploy():
     """Archives and deploys the static files to the host servers.
