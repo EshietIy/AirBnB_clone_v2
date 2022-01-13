@@ -7,6 +7,7 @@ import os
 env.hosts = ['35.190.182.223', '18.232.186.120']
 
 def do_deploy(archive_path):
+    """deploy archive to server"""
     a_list = archive_path.split(".tgz")
     archive_wo_ext = "".join(a_list)
     b_list = archive_wo_ext.split("versions/")
