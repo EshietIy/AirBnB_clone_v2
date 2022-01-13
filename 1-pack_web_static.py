@@ -6,11 +6,13 @@ from datetime import datetime
 
 
 def do_pack():
-    """Archives the static files."""
+    """archives the static file"""
     try:
-        filepath = "versions/web_static_" + datetime.now().strftime("%y%m%d%H%M%S") + ".tgz"
+        filepath = "versions/web_static_" + datetime.now().\
+        strftime("%Y%m%d%H%M%S") + ".tgz"
         local("mkdir -p versions")
-        local("tar -zcvf version/web_static_$(data +%y%m%d%H%M%S).tgz web_static")
+        local("tar -zcvf versions/web_static_$(date +%Y%m%d%H%M%S).tgz\
+        web_static")
         print("web_static packed: {} -> {}".format(filepath, os.path.getsize(filepath)))
     except BaseException:
         return None
