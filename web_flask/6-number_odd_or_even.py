@@ -19,8 +19,6 @@ def hbnb():
     return 'HBNB'
 
 
-
-
 @app.route('/c/<text>')
 def c(text):
     """return content of variable"""
@@ -44,6 +42,7 @@ def number(n):
 def number_template(n):
     """ render template if n is int"""
     return render_template('5-number.html', n=n)
+
 
 @app.route('/number_odd_or_even/<int:n>')
 def odd_or_even(n):
